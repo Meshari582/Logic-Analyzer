@@ -13,4 +13,4 @@ STM32 firmware handling the FPGA readout link and host communication.
 Waveform display and measurement tool.
 
 ## Status
-🚧 In development — single-channel end-to-end chain, built incrementally as part of a 1-month internship project.
+In development 
