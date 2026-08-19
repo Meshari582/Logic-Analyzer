@@ -5,6 +5,7 @@ module capture_tb;
     reg  output_trigger;
     reg  sample_en;
     reg  arm;
+	 reg reset;
     wire done;
     wire we;
     wire [13:0] sample_counter;
@@ -21,8 +22,10 @@ module capture_tb;
         output_trigger <= 1'b0;
         sample_en      <= 1'b0;
         arm            <= 1'b0;
+		  reset          <= 1'b1;
 
         #20; // let it settle in IDLE for a bit before anything happens
+		  reset           <=1'b0;
 
         // --- Fire the trigger to leave IDLE and go to RUNNING ---
         output_trigger <= 1'b1;
@@ -58,6 +61,7 @@ module capture_tb;
         .clk(clk),
         .output_trigger(output_trigger),
         .sample_en(sample_en),
+		  .reset(reset),
         .arm(arm),
         .done(done),
 		  .we(we),
