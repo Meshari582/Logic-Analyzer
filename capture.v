@@ -2,7 +2,8 @@ module capture (
     input  clk,
     input  output_trigger,
     input  sample_en,     // from rate_div — only sample when this is high
-    input  arm,           // from MCU — kicks FULL back to IDLE for next capture
+    input  arm,   	 // from MCU — kicks FULL back to IDLE for next capture
+	 input reset,
     output reg done, //
     output reg [13:0] sample_counter,
     output reg we
@@ -13,7 +14,14 @@ module capture (
     parameter MAX_SAMPLES = 16384;
     reg [1:0]  state;
 
-    always @(posedge clk) begin
+    always @(posedge clk or posedge reset) begin
+	if (reset) begin
+        done           <= 0;
+        sample_counter <= 0;
+        we             <= 0;
+        state          <= IDLE;     
+    end
+else begin 
         case (state)
             IDLE: begin
                 sample_counter <= 0;   // reset ready for next capture
@@ -51,4 +59,5 @@ module capture (
 
         endcase
     end
+	 end
 endmodule
