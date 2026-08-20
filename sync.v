@@ -4,7 +4,7 @@ module sync (
     input  d,        // Raw, potentially unstable async input signal
     output q         // Final synced output — safe to use elsewhere in the design
 );
-
+// 2 clock cycles between d and q
     // Internal wire connecting the first flip-flop's output to the
     // second flip-flop's input. Not visible outside this module.
     wire q1;
