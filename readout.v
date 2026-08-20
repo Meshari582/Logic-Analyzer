@@ -1,18 +1,52 @@
-module readout (
-    input clk,
-    input reset,           // resets raddr back to page 0 at the start of a new capture
-    input rd_strobe,            
-    input rdata,           
-    output reg [13:0] raddr,   // which page to read from
-    output reg data_out       // the bit that comes back off that page
-);
-always @(posedge clk) begin
-    if (reset) begin
-        raddr <= 0;             // start over at page 0
+`timescale 1 ns / 100 ps
+ module buffer_tb;
+
+    reg clk;
+    reg  we;
+    reg  [13:0] waddr;
+    reg  wdata;
+    reg  [13:0] raddr;
+    wire rdata;
+    // Clock generation:  20ns 
+    always begin
+        #10;
+        clk <= ~clk;
     end
-    else if (rd_strobe) begin
-        data_out <= rdata;
-        raddr    <= raddr+1;    // move on to the next page for next time
-    end
+
+initial begin
+    // start everything at a known state
+    clk   <= 1'b0;
+    we    <= 1'b0;
+    waddr <= 14'd0;
+    wdata <= 1'b0;
+    raddr <= 14'd0;
+	 rdata <= 1'b0;
+	 
+    #20;
+
+    // write a 1 onto page 5
+    we    <= 1'b1;
+    waddr <= 14'd5;
+    wdata <= 1'b1;
+    #20;
+    we <= 1'b0;   // done writing
+
+    #20;   // idle a tick, nothing happens
+
+
+    raddr <= 14'd5;
+    #20;   // one tick after setting raddr 
+
+    $stop;
 end
+	  // Instantiate the DUT
+    buffer dut (
+        .clk(clk),
+        .we(we),
+        .waddr(waddr),
+        .wdata(wdata),
+        .raddr(raddr),
+		  .rdata(rdata)
+    );
+
 endmodule
