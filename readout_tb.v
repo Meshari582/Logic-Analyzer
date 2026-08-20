@@ -13,7 +13,7 @@ module readout_tb;
     end
 	 /* every 10 ns, clk flips. Since it takes two flips to get back to where it started (0→1→0), 
 		  that gives you a clock with a 20 ns period — i.e., it goes high for 10 ns, low for 10 ns, repeating.
-        */
+        
     // Test stimulus
       initial begin
         // Known starting state
@@ -26,7 +26,7 @@ module readout_tb;
         // Simulate buffer already showing page 0's bit = 1
         rdata <= 1'b1;
         #20;   // give it a tick to settle before we pulse
-        // --- First strobe: MCU asks for the current bit ---
+        //First strobe: MCU asks for the current bit 
         rd_strobe <= 1'b1;
         #20;              // one tick — this is when readout should grab rdata and move raddr
         rd_strobe <= 1'b0;
@@ -34,7 +34,7 @@ module readout_tb;
         // Simulate buffer now showing page 1's bit = 0
         rdata <= 1'b0;
         #20;   // let it settle, matching buffer's one-tick read delay
-        // --- Second strobe: MCU asks for the next bit ---
+        //Second strobe: MCU asks for the next bit 
         rd_strobe <= 1'b1;
         #20;
         rd_strobe <= 1'b0;
