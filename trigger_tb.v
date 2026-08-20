@@ -3,6 +3,7 @@ module trigger_tb;
    reg  clk;
    reg  probe_in;
    reg  polarity;
+	reg reset;
    wire output_trigger;
 
     // Clock generation: toggles every 10 ns -> 20 ns period
@@ -22,10 +23,10 @@ module trigger_tb;
         clk      <= 1'b0;
         probe_in <= 1'b0;
         polarity <= 1'b1;
-
+        reset    <= 1'b1;
         #20;                     // wait 20ns (one full clock period) with probe_in low,
                                   // so the DUT settles into a known starting state
-                                  // (prev_sample = 0) before we give it anything to detect.
+        reset    <=1'b0;                          // (prev_sample = 0) before we give it anything to detect.
 
         // --- TEST 1: matching-polarity rising edge ---
         probe_in <= 1'b1;        // t=20: raise probe_in — a rising edge, and polarity=1
@@ -73,6 +74,7 @@ module trigger_tb;
         .clk(clk),
         .probe_in(probe_in),
         .polarity(polarity),
+		  .reset(reset),
         .output_trigger(output_trigger)
     );
 
