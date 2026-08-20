@@ -4,7 +4,7 @@ module Counter_tb;
 
     reg clk;
     reg reset;
-    wire [3:0] counter;
+    wire [12:0] counter;
 
     // Clock generation: toggles every 10 ns -> 20 ns period
     always begin
