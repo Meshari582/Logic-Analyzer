@@ -32,20 +32,22 @@ else begin
                 else
                     state <= IDLE;
             end
-            RUNNING: begin
-                if (sample_en) begin
-                    we             <= 1;   // write THIS tick's sample — every pulse, including the last
-                    sample_counter <= sample_counter + 1;
-                    if (sample_counter == MAX_SAMPLES - 1)
-                        state <= FULL;
-                    else
-                        state <= RUNNING;
-                end
-                else begin
-                    we    <= 0;   // no sample_en pulse this tick, don't write
-                    state <= RUNNING;   // no sample tick yet, just wait
-                end
-            end
+          RUNNING: begin
+    if (sample_en) begin
+        we             <= 1;
+        sample_counter <= sample_counter + 1;
+        if (sample_counter == MAX_SAMPLES - 1) begin
+            state <= FULL;
+            done  <= 1;
+        end else begin
+            state <= RUNNING;
+        end
+    end
+    else begin
+        we    <= 0;
+        state <= RUNNING;
+    end
+end
             FULL: begin
                 we   <= 0;   // done sampling, never write here
                 done <= 1;
