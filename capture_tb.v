@@ -27,7 +27,7 @@ module capture_tb;
         #20; // let it settle in IDLE for a bit before anything happens
 		  reset           <=1'b0;
 
-        // --- Fire the trigger to leave IDLE and go to RUNNING ---
+        //Fire the trigger to leave IDLE and go to RUNNING 
         output_trigger <= 1'b1;
         #20;
         output_trigger <= 1'b0;  // trigger is a pulse, not a held level — drop it back down
@@ -44,7 +44,7 @@ module capture_tb;
         // By now, done should be high and state should be FULL.
         #20;
 
-        // --- Pulse arm to send it back to IDLE ---
+        // Pulse arm to send it back to IDLE 
         arm <= 1'b1;
         #20;
         arm <= 1'b0;
@@ -67,11 +67,5 @@ module capture_tb;
 		  .we(we),
         .sample_counter(sample_counter)
     );
-/*
-clk — the simulation clock, toggling every 10ns (20ns period), same as every testbench you've built — this is the heartbeat that all your synchronous logic reacts to on each posedge.
-output_trigger — the input you're using to simulate the pulse that would normally come from trigger.v; in the waveform it goes high once early on, briefly, to kick capture out of IDLE and into RUNNING.
-sample_en — the input simulating the periodic pulse from rate_div, driven by your repeat (8) loop; the waveform shows it toggling high/low repeatedly, each pulse advancing sample_counter by one during RUNNING.
-arm — the input simulating the MCU telling capture to reset and start over; it goes high once near the end of the simulation, which should kick state from FULL back to IDLE.
-done — the output flag capture raises once sample_counter reaches MAX_SAMPLES-1 (8, since you overrode it); the waveform shows it going high partway through and then dropping back to low once arm pulses.
-*/
+
 endmodule
