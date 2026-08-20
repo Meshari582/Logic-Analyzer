@@ -34,9 +34,9 @@ initial begin //initial just runs through once and stops.
     #100;
 
     reset <= 1'b0;            // test reset while d is toggling
-    #150;
+    #1500;
 
-
+    
     $stop;
 end
 
